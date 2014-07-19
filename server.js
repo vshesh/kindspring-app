@@ -25,6 +25,7 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var fs = require('fs');
+var handlebars = require('express3-handlebars');
 
 // //This code lets us test on local, or use heroku properly.
 // var settings;
@@ -38,14 +39,19 @@ var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
-app.set('views', path.join(__dirname, 'www', 'templates'));
-
+app.set('views', path.join(__dirname, 'www'));
+app.engine('handlebars', handlebars());
+app.set('view engine', 'handlebars');
+app.engine('html', handlebars());
 app.use(express.cookieParser());
-app.use(express.session());
+app.use(express.session({secret: 'pink unicornians'}));
+//app.use(express.favicon());
+app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.multipart());
 app.use(express.methodOverride());
+app.use(express.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'www')));
 
