@@ -12,6 +12,8 @@ Getting Started
 ```bash
 $ git clone https://github.com/vgupta0/kindspring-app.git
 $ cd kindspring-app
+$ npm install
+$ bower install
 $ node server.js
 ```
 
