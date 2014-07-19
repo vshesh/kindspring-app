@@ -1,7 +1,14 @@
 {
-  "name": "HelloIonic",
+  "name": "kindspring-app",
   "private": "true",
+  "directory" : "www/lib",
+  "dependencies" : {
+    "angular" : "latest",
+    "angular-route" : "latest",
+    "angular-ui-utils" : "latest"
+  },
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.0.0-beta.9"
   }
 }
+
