@@ -1,0 +1,18 @@
+<div class="bar bar-header bar-royal">
+  <h1 class="title">KindSpring App</h1>
+  <button class="button button-small" ng-click="loginClicked()">Logout</button>
+</div>
+
+<div class="ks-container">
+  <div class="list card kind-story-card" ng-repeat="story in stories">
+    <h5>{{story.title}}</h5>
+    <p>{{story.text}}</p>
+  </div>
+</div>
+
+<div class="tabs tabs-icon-only tabs-royal">
+  <a href="/#/home" class="tab-item"><i class="icon ion-home"></i></a>
+  <a href="/#/post" class="tab-item"><i class="icon ion-compose"></i></a>
+  <a href="/#/progress" class="tab-item"><i class="icon ion-ios7-pulse"></i></a>
+  <a href="/#/settings" class="tab-item"><i class="icon ion-gear-b"></i></a>
+</div>
