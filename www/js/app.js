@@ -24,6 +24,9 @@ angular.module('kindspring-app', ['ngRoute', 'kindspring-app.controllers'])
       templateUrl: 'templates/post.html',
       controller: 'PostCtrl'
     })
+    .when('/progress', {
+      templateUrl: 'templates/'
+    })
     .otherwise({
       redirectTo: '/'
     });
