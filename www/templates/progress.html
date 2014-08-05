@@ -5,22 +5,16 @@
     <!-- Previous Acts of Kindness -->
     <div class="col"> 
       <h5>Completed Acts!</h5>
-
-      <ion-scroll>
-        <ul class="list">
-          <li class="item item-" ng-repeat="act in previousacts">{{act.name}}</li>
+        <ul class="list" ng-scroll-viewport style="height: 400px;">
+          <li class="item" ng-scroll="act in previousacts">{{act.name}}</li>
         </ul>
-      </ion-scroll>
     </div>
     <!-- Suggestions for Acts of Kindness -->
     <div class="col">
       <h5> Suggestions for You </h5>
-
-      <ion-scroll>
-        <ul class="list">
-          <li class="item" ng-repeat="act in previousacts">{{act.name}}</li>
+        <ul class="list" ng-scroll-viewport style="height: 400px;"> 
+          <li class="item" ng-scroll="act in suggestedacts">{{act.name}}</li>
         </ul>
-      </ion-scroll>
     </div>
   </div>
 </div>

@@ -33,3 +33,9 @@ h5 {
   padding: 5px;
   line-height: 1.3em;
 }
+
+/*may need to not include bar on this.*/
+.bar, .tabs {
+  position: fixed;
+}
+

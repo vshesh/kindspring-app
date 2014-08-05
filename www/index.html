@@ -14,8 +14,9 @@
     -->
 
     <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="lib/angular/angular.min.js"></script>
     <script src="lib/angular-route/angular-route.min.js"></script>
+    <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
     <script src="lib/angular-ui-utils/ui-utils.min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
@@ -33,14 +34,14 @@
       <button class="button button-small" ng-click="loginClicked()">Logout</button>
     </div>
 
-    <ion-content><div ng-view></div><ion-content>
+    <div ng-view></div>
 
-    <ion-tabs class="tabs-icon-only tabs-royal">
+    <div class="tabs tabs-icon-only tabs-royal">
         <a href="#/home" class="tab-item"><i class="icon ion-home"></i></a>
         <a href="#/post" class="tab-item"><i class="icon ion-compose"></i></a>
         <a href="#/progress" class="tab-item"><i class="icon ion-ios7-pulse"></i></a>
         <a href="#/settings" class="tab-item"><i class="icon ion-gear-b"></i></a>
-    </ion-tabs>
+    </div>
 
 
   </body>

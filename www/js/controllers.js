@@ -1,7 +1,20 @@
+// (vishesh): alternatively can just set a global get function on the array object
+// that works like the one in here, but that's a more dangerous approach.
+function ArrayDataSource(array) {
+  return {
+    get: function(index, count, success) {
+        var start = Math.max(0, index);
+        var end = Math.min(index+count, this.data.length);
+        success(this.data.slice(0, end));
+    },
+    data: array    
+  };
+}
+
 angular.module('kindspring-app.controllers', [])
-.controller('ProgressCtrl', function($scope, $location) {
+.controller('ProgressCtrl', function($scope, $timeout, $location) {
   $scope.numActs = [1, 0, 1, 1, 3, 2, 1];
-  $scope.previousacts = [
+  $scope.previousacts = ArrayDataSource([
     {name: 'Flowers For My Neighbors'},
     {name: 'Flowers For My Neighbors'},
     {name: 'Flowers For My Neighbors'},
@@ -15,8 +28,8 @@ angular.module('kindspring-app.controllers', [])
     {name: 'Flowers For My Neighbors'},
     {name: 'Flowers For My Neighbors'},
     {name: 'Flowers For My Neighbors'},
-  ];
-  $scope.suggestedacts = [
+  ]);
+  $scope.suggestedacts = ArrayDataSource([
     {name: 'Flowers For My Neighbors'},
     {name: 'Flowers For My Neighbors'},
     {name: 'Flowers For My Neighbors'},
@@ -30,7 +43,7 @@ angular.module('kindspring-app.controllers', [])
     {name: 'Flowers For My Neighbors'},
     {name: 'Flowers For My Neighbors'},
     {name: 'Flowers For My Neighbors'},
-  ];
+  ]);
 })
 .controller('PostCtrl', function($scope, $location) {
   
