@@ -4,9 +4,17 @@
 </div>
 
 <div class="ks-container">
-  <div class="list card kind-story-card" ng-repeat="story in stories">
-    <h5>{{story.title}}</h5>
-    <p>{{story.text}}</p>
+  <h5>Progress for Vishesh Gupta</h5>
+  <h2>graph goes here</h2>
+  <div class="row">
+    <!-- Previous Acts of Kindness -->
+    <div class="col"> 
+      <div class="row" ng-repeat="act in previousacts"><button class="button button-outline button-royal">{{act.name}}</button></div>
+    </div>
+    <!-- Suggestions for Acts of Kindness -->
+    <div class="col">
+      <div class="row" ng-repeat="act in suggestedacts"><button class="button button-outline button-royal">{{act.name}}</button></div>
+    </div>
   </div>
 </div>
 

@@ -5,8 +5,8 @@
 
 <div class="ks-container">
   <div class="list card kind-story-card" ng-repeat="story in stories">
-    <h5>{{story.title}}</h5>
-    <p>{{story.text}}</p>
+    <h5>{{story.story_title}}</h5>
+    <p ng-bind-html="stripTags(story.story_descr)"></p>
   </div>
 </div>
 
