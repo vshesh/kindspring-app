@@ -27,3 +27,9 @@ h5 {
 .post-button-bar {
   margin-top: 3%;
 }
+
+.progress-act-button {
+  font-size: 14px;
+  padding: 5px;
+  line-height: 1.3em;
+}

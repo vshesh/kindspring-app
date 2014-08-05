@@ -3,7 +3,33 @@ angular.module('kindspring-app.controllers', [])
   $scope.numActs = [1, 0, 1, 1, 3, 2, 1];
   $scope.previousacts = [
     {name: 'Flowers For My Neighbors'},
-    {name: ' '}
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+  ];
+  $scope.suggestedacts = [
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
   ];
 })
 .controller('PostCtrl', function($scope, $location) {
