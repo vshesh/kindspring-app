@@ -1,6 +1,6 @@
 angular.module('kindspring-app.controllers', [])
 .controller('PostCtrl', function($scope, $location) {
-  
+    
 })
 .controller('HomepageCtrl', function($scope, $location) {
   $scope.stories = [
