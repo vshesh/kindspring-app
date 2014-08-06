@@ -11,11 +11,10 @@ h5 {
 .ks-container {
   margin-top: 55px;
   margin-bottom: 55px;
+  background-color: inherit;
 }
 
 .kind-story-card {
-  max-height: 135px;
-  overflow: hidden;
 }
 .kind-story-card h5 {
   text-align: center;
@@ -23,6 +22,8 @@ h5 {
 .kind-story-card p {
   padding: 0 10px;
   white-space: pre;
+  max-height: 4.5em;
+  overflow: hidden;
 }
 .post-button-bar {
   margin-top: 3%;
