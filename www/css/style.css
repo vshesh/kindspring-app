@@ -2,6 +2,12 @@
 body {
   background-color: #e8e6cb;
 }
+
+h5 {
+  font-weight: bold;
+  text-align: center;
+}
+
 .ks-container {
   margin-top: 55px;
   margin-bottom: 55px;
@@ -22,3 +28,15 @@ body {
 .post-button-bar {
   margin-top: 3%;
 }
+
+.progress-act-button {
+  font-size: 14px;
+  padding: 5px;
+  line-height: 1.3em;
+}
+
+/*may need to not include bar on this.*/
+.bar, .tabs {
+  position: fixed;
+}
+

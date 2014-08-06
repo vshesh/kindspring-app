@@ -1,4 +1,50 @@
+// (vishesh): alternatively can just set a global get function on the array object
+// that works like the one in here, but that's a more dangerous approach.
+function ArrayDataSource(array) {
+  return {
+    get: function(index, count, success) {
+        var start = Math.max(0, index);
+        var end = Math.min(index+count, this.data.length);
+        success(this.data.slice(0, end));
+    },
+    data: array    
+  };
+}
+
 angular.module('kindspring-app.controllers', [])
+.controller('ProgressCtrl', function($scope, $timeout, $location) {
+  $scope.numActs = [1, 0, 1, 1, 3, 2, 1];
+  $scope.previousacts = ArrayDataSource([
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+  ]);
+  $scope.suggestedacts = ArrayDataSource([
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+    {name: 'Flowers For My Neighbors'},
+  ]);
+})
 .controller('PostCtrl', function($scope, $location) {
     
 })
@@ -19,61 +65,21 @@ angular.module('kindspring-app.controllers', [])
     $location.path('/home');
   }
 })
-.controller('MainCtrl',function($scope, $location) {
+.controller('MainCtrl',function($scope, $http, $location) {
   $scope.loginClicked = function() {
     $location.path('/login');
   }
-  $scope.stories = [
-  {
-    title: 'Marks of Kindness',
-    text : "I was on my way to my parents' on my motorcycle and saw a middle" + 
-     "aged man carrying a heavy sack on his shoulders and walking with great" + 
-     " struggle. I passed him, then paused, and turned around to stop near him" +
-     " and offer him a ride. He lifted the heavy sack which had a lot of scrap iron"
-  },
-  {
-    title: 'A Kindness That Has Become A Habit',
-    text : "I was on my way to my parents' on my motorcycle and saw a middle" + 
-     "aged man carrying a heavy sack on his shoulders and walking with great" + 
-     " struggle. I passed him, then paused, and turned around to stop near him" +
-     " and offer him a ride. He lifted the heavy sack which had a lot of scrap iron" +
-     " and sat on the pillion. Immediately he asked me my name and after I told him," +
-     " blessed me aloud. We rode on. In five minutes, we were stopped by a traffic" +
-     " cop who demanded to see my license. There were many cops who were stopping" +
-     " everyone on that road. My ride got down with his sack and got back on after I" +
-     " was through with the cop. We reached his destination. He got off and thanked me" +
-     " again. After reaching home, while parking my motorcycle I saw that the iron pieces" +
-     " in the sack that he had placed on the pillion had made deep marks and almost torn the" +
-     " seat in a couple of places. I smiled and took it as a reminder he had left behind" +
-     " so that I do not forget what the pillion is for"    
-  },
-  {
-    title: 'Marks of Kindness',
-    text : "I was on my way to my parents' on my motorcycle and saw a middle" + 
-     "aged man carrying a heavy sack on his shoulders and walking with great" + 
-     " struggle. I passed him, then paused, and turned around to stop near him" +
-     " and offer him a ride. He lifted the heavy sack which had a lot of scrap iron"
-  },
-  {
-    title: 'Marks of Kindness',
-    text : "I was on my way to my parents' on my motorcycle and saw a middle" + 
-     "aged man carrying a heavy sack on his shoulders and walking with great" + 
-     " struggle. I passed him, then paused, and turned around to stop near him" +
-     " and offer him a ride. He lifted the heavy sack which had a lot of scrap iron"
-  },
-  {
-    title: 'Marks of Kindness',
-    text : "I was on my way to my parents' on my motorcycle and saw a middle" + 
-     "aged man carrying a heavy sack on his shoulders and walking with great" + 
-     " struggle. I passed him, then paused, and turned around to stop near him" +
-     " and offer him a ride. He lifted the heavy sack which had a lot of scrap iron"
-  },
-  {
-    title: 'Marks of Kindness',
-    text : "I was on my way to my parents' on my motorcycle and saw a middle" + 
-     "aged man carrying a heavy sack on his shoulders and walking with great" + 
-     " struggle. I passed him, then paused, and turned around to stop near him" +
-     " and offer him a ride. He lifted the heavy sack which had a lot of scrap iron"
-  },
-  ];
+  $scope.stories = [];
+  $http({
+    method: 'POST',
+    url: 'api.php',
+    data: 'op=stories',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+  }).success(function(data, status, headers, config) {
+    $scope.stories = data;
+  });
+
+  $scope.stripTags = function(str) {
+    return str.replace(/<[^>]+>/gi,"");
+  };
 });

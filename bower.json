@@ -5,10 +5,11 @@
   "dependencies" : {
     "angular" : "latest",
     "angular-route" : "latest",
-    "angular-ui-utils" : "latest"
+    "angular-ui-utils" : "latest",
+    "angular-sanitize" : "latest"
   },
   "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.0.0-beta.9"
+    "ionic": "driftyco/ionic-bower#1.0.0-beta.10"
   }
 }
 
