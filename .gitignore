@@ -87,5 +87,4 @@ npm-debug.log
 node_modules
 bower_components
 # name of the current frontend library directory
-www/lib/
 
