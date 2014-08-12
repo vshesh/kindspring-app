@@ -1,0 +1,40 @@
+/* Empty. Add your own CSS if you like */
+body {
+  background-color: #e8e6cb;
+}
+
+h5 {
+  font-weight: bold;
+  text-align: center;
+}
+
+.ks-container {
+  margin-top: 55px;
+  margin-bottom: 55px;
+  background-color: inherit;
+}
+
+.kind-story-card {
+}
+.kind-story-card h5 {
+  text-align: center;
+}
+.kind-story-card p {
+  padding: 0 10px;
+  white-space: pre;
+  max-height: 4.5em;
+  overflow: hidden;
+}
+.post-button-bar {
+  margin-top: 3%;
+}
+
+.list {
+  
+}
+
+/*may need to not include bar on this.*/
+.bar, .tabs {
+  position: fixed;
+}
+

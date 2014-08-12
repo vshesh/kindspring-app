@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="/vishesh/kindspring-app/www/">
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular-route/angular-route.min.js"></script>
+    <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="lib/angular-ui-utils/ui-utils.min.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <!-- for now, it's a webapp so no cordova -->
+    <!-- <script src="cordova.js"></script> -->
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+  </head>
+
+  <body ng-app="kindspring-app">
+    <div class="bar bar-header bar-royal">
+      <h1 class="title">KindSpring App</h1>
+      <button class="button button-small" ng-click="loginClicked()">Logout</button>
+    </div>
+
+    <div ng-view></div>
+
+    <div class="tabs tabs-icon-only tabs-royal">
+        <a href="#/home" class="tab-item"><i class="icon ion-home"></i></a>
+        <a href="#/post" class="tab-item"><i class="icon ion-compose"></i></a>
+        <a href="#/progress" class="tab-item"><i class="icon ion-ios7-pulse"></i></a>
+        <a href="#/settings" class="tab-item"><i class="icon ion-gear-b"></i></a>
+    </div>
+
+
+  </body>
+</html>
+
+
