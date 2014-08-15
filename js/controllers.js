@@ -60,26 +60,62 @@ angular.module('kindspring-app.controllers', [])
   }
   ];
 })
-.controller('LoginCtrl', function($scope, $location) {
-  $scope.login = function() {
-    $location.path('/home');
-  }
-})
 .controller('MainCtrl',function($scope, $http, $location) {
-  $scope.loginClicked = function() {
-    $location.path('/login');
-  }
   $scope.stories = [];
+  $scope.user = '';
+  $scope.pass = '';
+  $scope.loginMessage = '';
+
   $http({
     method: 'POST',
     url: 'api.php',
-    data: 'op=stories',
+    data: 'op=public_feed',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
   }).success(function(data, status, headers, config) {
     $scope.stories = data;
   });
 
+  $scope.login = function() {
+    if ($scope.user === '' || $scope.pass === '') return;
+    $http({
+      method: 'POST',
+      url: 'api.php',
+      data: 'op=login&user='+$scope.user+'&pass=' + $scope.pass,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function(data, status, headers, config) {
+      console.log(data);
+      if (data === 1 || data === '1') {
+        $location.url('/home');
+      } else {
+        $scope.loginMessage = 'Invalid username or password';
+      }
+    });
+  }
+  
   $scope.stripTags = function(str) {
     return str.replace(/<[^>]+>/gi,"");
   };
+
+  $scope.expandedIndex = -1;
+  $scope.setExpanded = function(index) {
+    if (index == $scope.expandedIndex) {
+      $scope.expandedIndex = -1;
+    } else {
+      $scope.expandedIndex = index;
+    }
+  };
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+

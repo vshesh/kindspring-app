@@ -7,7 +7,7 @@ $op = $_REQUEST["op"];
 
 if ($op == "public_feed") {
     $stories = getPublicFeed();
-    debug_array($stories);
+    echo json_encode($stories);
 
 } elseif ($op == "chall_list") {
     $challs = getMyChallenges();
@@ -24,7 +24,7 @@ if ($op == "public_feed") {
 } elseif ($op == "chall_ideas") {
     $ideas = getChallengeIdeas($_REQUEST["cid"]);
     debug_array($ideas);
-
+ 
 } elseif ($op == "menu") {
     if (!$user->isLoggedIn()) die("Login first.");
     t_show_rel("index.tpl");
@@ -33,12 +33,10 @@ if ($op == "public_feed") {
     $user->logOut();
     die("User logged out.");
 
+} elseif ($op == "login") {
+    echo json_encode(processLogin($_REQUEST["user"], $_REQUEST["pass"]));
 } else {
-    if ($user->isLoggedIn()) {
-        debug_array($_SESSION);
-        die("Already logged in. Logout to see form.");
-    }
-    showLoginForm();
+    echo json_encode($op);
 }
 
 ///////////////////////////////////////////////////
@@ -117,7 +115,7 @@ function showLoginForm() {
 
     $form->add('label', 'label_password', 'password', 'Password:');
     //$obj = $form->add('password', 'password', $pwd);
-    $obj = $form->add('password', 'password');
+    $obj = $form->add('password', 'password');  
     $obj->set_rule(array(
         'required'  => array('error', 'Please enter password!'),
     ));

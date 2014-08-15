@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <base href="/vishesh/kindspring-app/www/">
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title></title>
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
@@ -29,14 +29,14 @@
   </head>
 
   <body ng-app="kindspring-app">
-    <div class="bar bar-header bar-royal">
+    <div class="bar bar-header bar-balanced">
       <h1 class="title">KindSpring App</h1>
-      <button class="button button-small" ng-click="loginClicked()">Logout</button>
+      <button class="button button-small" ng-click="loginClicked()">Login</button>
     </div>
 
     <div ng-view></div>
 
-    <div class="tabs tabs-icon-only tabs-royal">
+    <div class="tabs tabs-icon-only tabs-balanced">
         <a href="#/home" class="tab-item"><i class="icon ion-home"></i></a>
         <a href="#/post" class="tab-item"><i class="icon ion-compose"></i></a>
         <a href="#/progress" class="tab-item"><i class="icon ion-ios7-pulse"></i></a>
