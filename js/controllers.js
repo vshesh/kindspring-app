@@ -34,6 +34,20 @@ angular.module('kindspring-app.controllers', [])
 .controller('PostCtrl', function($scope, $location) {
   
 })
+.controller('MemberCtrl', function($scope, $location, $http, $routeParams) {
+  $scope.members = [];
+  $scope.$on('$routeChangeSuccess', function() {
+    $http({
+      method: 'POST',
+      url: 'api.php',
+      data: 'op=chall_mem&cid=' + $routeParams.cid,
+      headers: {'Content-Type':'application/x-www-form-urlencoded'}
+    }).success(function(data) {
+      console.log(data);
+      $scope.members = data;
+    });
+  });  
+})
 .controller('ChallengeCtrl', function($scope, $location, $http, $routeParams) {
   $scope.feed = [];
   $scope.$on('$routeChangeSuccess', function() {
@@ -43,7 +57,6 @@ angular.module('kindspring-app.controllers', [])
       data: 'op=chall_feed&cid=' + $routeParams.cid,
       headers: {'Content-Type':'application/x-www-form-urlencoded'}
     }).success(function(data) {
-      console.log(data);
       $scope.feed = data;
     });
   });

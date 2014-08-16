@@ -19,7 +19,7 @@ if ($op == "public_feed") {
 
 } elseif ($op == "chall_mem") {
     $mems = getChallengeMembers($_REQUEST["cid"]);
-    debug_array($mems);
+    echo json_encode($mems);
 
 } elseif ($op == "chall_ideas") {
     $ideas = getChallengeIdeas($_REQUEST["cid"]);
