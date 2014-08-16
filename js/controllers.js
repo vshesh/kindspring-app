@@ -11,19 +11,14 @@ function ArrayDataSource(array) {
   };
 }
 
+function stripTags(str) {
+    return str.replace(/<[^>]+>/gi,"");
+}
+
 angular.module('kindspring-app.controllers', [])
 .controller('ProgressCtrl', function($scope, $timeout, $location) {
   $scope.numActs = [1, 0, 1, 1, 3, 2, 1];
   $scope.previousacts = ArrayDataSource([
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
     {name: 'Flowers For My Neighbors'},
     {name: 'Flowers For My Neighbors'},
     {name: 'Flowers For My Neighbors'},
@@ -34,31 +29,47 @@ angular.module('kindspring-app.controllers', [])
     {name: 'Flowers For My Neighbors'},
     {name: 'Flowers For My Neighbors'},
     {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
-    {name: 'Flowers For My Neighbors'},
   ]);
 })
 .controller('PostCtrl', function($scope, $location) {
   
 })
-.controller('HomepageCtrl', function($scope, $location) {
-  $scope.stories = [
-  {
-    title: 'Roses',
-    text: 'roses are red \nviolets are blue \n... fill in the blanks your own way'
-  },
-  {
-    title: 'Haiku',
-    text: 'Haikus are awesome \nBut they can sometimes be strange \nRefrigerator'
-  }
-  ];
+.controller('ChallengeCtrl', function($scope, $location, $http, $routeParams) {
+  $scope.feed = [];
+  $scope.$on('$routeChangeSuccess', function() {
+    $http({
+      method: 'POST',
+      url: 'api.php',
+      data: 'op=chall_feed&cid=' + $routeParams.cid,
+      headers: {'Content-Type':'application/x-www-form-urlencoded'}
+    }).success(function(data) {
+      console.log(data);
+      $scope.feed = data;
+    });
+  });
+})
+.controller('HomepageCtrl', function($scope, $http, $location, $route) {
+  $scope.challenges = [{story_title: "sample story", story_descr: "<br>"}];
+  $scope.$on('$routeChangeSuccess', function() {
+    $http({
+      method: 'POST',
+      url: 'api.php',
+      data: 'op=chall_list',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function(data) {
+      $scope.challenges = data;
+    });
+  });
+  
+  $scope.stripTags = stripTags;
+  $scope.daysRemaining = function(enddate, startdate) {
+    if (new Date(startdate) - new Date() > 0) return 'upcoming challenge';
+    var days = Math.floor((new Date(enddate)- new Date())/1000/60/60/24);
+    return days > 0 ? days + ' days remaining' : 'challenge completed';
+  };
+  $scope.goToChallenge = function(cid) {
+    $location.url('/challenge/'+cid);
+  };
 })
 .controller('MainCtrl',function($scope, $http, $location) {
   $scope.stories = [];
@@ -66,13 +77,16 @@ angular.module('kindspring-app.controllers', [])
   $scope.pass = '';
   $scope.loginMessage = '';
 
-  $http({
-    method: 'POST',
-    url: 'api.php',
-    data: 'op=public_feed',
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-  }).success(function(data, status, headers, config) {
-    $scope.stories = data;
+  $scope.$on('$routeChangeSuccess', function() {
+    console.log('routechangesuccess');
+    $http({
+      method: 'POST',
+      url: 'api.php',
+      data: 'op=public_feed',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function(data, status, headers, config) {
+      $scope.stories = data;
+    });
   });
 
   $scope.login = function() {
@@ -92,9 +106,7 @@ angular.module('kindspring-app.controllers', [])
     });
   }
   
-  $scope.stripTags = function(str) {
-    return str.replace(/<[^>]+>/gi,"");
-  };
+  $scope.stripTags = stripTags;
 
   $scope.expandedIndex = -1;
   $scope.setExpanded = function(index) {

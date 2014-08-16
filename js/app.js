@@ -20,6 +20,18 @@ angular.module('kindspring-app', ['ngRoute', 'ngSanitize', 'ui.utils', 'kindspri
       templateUrl: 'templates/homepage.html',
       controller: 'HomepageCtrl'
     })
+    .when('/challenge/:cid', {
+      templateUrl: 'templates/challenge.html',
+      controller: 'ChallengeCtrl'
+    })
+    .when('/members/:cid', {
+      templateUrl: 'templates/members.html',
+      controller: 'MemberCtrl'
+    })
+    .when('/ideas/:cid', {
+      templateUrl: 'templates/ideas.html',
+      controller: 'IdeaCtrl'
+    })
     .when('/post', {
       templateUrl: 'templates/post.html',
       controller: 'PostCtrl'
@@ -31,5 +43,13 @@ angular.module('kindspring-app', ['ngRoute', 'ngSanitize', 'ui.utils', 'kindspri
     .otherwise({
       redirectTo: '/'
     });
+})
+
+.factory('challengeService', function() {
+  var challenges = [];
+  return {
+    getChallenges: function() { return challenges;},
+    getCid: function(index) { return challenges[0].cid},
+  }
 });
 

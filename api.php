@@ -11,11 +11,11 @@ if ($op == "public_feed") {
 
 } elseif ($op == "chall_list") {
     $challs = getMyChallenges();
-    debug_array($challs);
+    echo json_encode($challs);
 
 } elseif ($op == "chall_feed") {
     $stories = getChallengeFeed($_REQUEST["cid"]);
-    debug_array($stories);
+    echo json_encode($stories);
 
 } elseif ($op == "chall_mem") {
     $mems = getChallengeMembers($_REQUEST["cid"]);

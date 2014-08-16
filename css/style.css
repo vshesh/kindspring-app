@@ -34,7 +34,7 @@ h5 {
 
 
 /*may need to not include bar on this.*/
-.bar, .tabs {
+#fixedtabs {
   position: fixed;
 }
 
