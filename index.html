@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,40 +11,45 @@
 
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
-    -->
-    
-    <!-- ionic/angularjs js -->
-    <script src="lib/angular/angular.min.js"></script>
-    <script src="lib/angular-route/angular-route.min.js"></script>
-    <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
-    <script src="lib/angular-ui-utils/ui-utils.min.js"></script>
-    <script src="lib/angular-touch/angular-touch.min.js"></script>
+-->
 
-    <!-- cordova script (this will be a 404 during development) -->
-    <!-- for now, it's a webapp so no cordova -->
-    <!-- <script src="cordova.js"></script> -->
+<!-- ionic/angularjs js -->
+<script src="lib/angular/angular.min.js"></script>
+<script src="lib/angular-route/angular-route.min.js"></script>
+<script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
+<script src="lib/angular-ui-utils/ui-utils.min.js"></script>
+<script src="lib/angular-touch/angular-touch.min.js"></script>
 
-    <!-- your app's js -->
-    <script src="js/app.js"></script>
-    <script src="js/controllers.js"></script>
-  </head>
+<!-- cordova script (this will be a 404 during development) -->
+<!-- for now, it's a webapp so no cordova -->
+<!-- <script src="cordova.js"></script> -->
 
-  <body ng-app="kindspring-app">
+<!-- your app's js -->
+<script src="js/app.js"></script>
+<script src="js/controllers.js"></script>
+</head>
+
+<body ng-app="kindspring-app" ng-controller="SideMenuCtrl">
+  <!-- Sidemenu divs -->
+  <div id="menuleft" ng-class="{hide:!showmenu,slide:showmenu}">
+      <h1>Demo</h1>
+      <ul>
+        <li><a ng-click="toggleMenu()">Link 1</a></li>
+        <li><a ng-click="toggleMenu()">Link 2</a></li>
+        <li><a ng-click="toggleMenu()">Link 3</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content Div -->
+  <div id="all">
+    <div class="overlay" ng-class="{show:showmenu}" ng-swipe-left="showmenu=false" ng-click="showmenu=false"></div>
     <div class="bar bar-header bar-balanced">
+      <button class="button button-icon icon ion-navicon" ng-click="toggleMenu()"></button>
       <h1 class="title">KindSpring App</h1>
     </div>
-
     <div ng-view></div>
-
-<!--     <div class="tabs tabs-icon-only tabs-balanced" id="fixedtabs">
-        <a href="#/home" class="tab-item"><i class="icon ion-home"></i></a>
-        <a href="#/post" class="tab-item"><i class="icon ion-compose"></i></a>
-        <a href="#/progress" class="tab-item"><i class="icon ion-ios7-pulse"></i></a>
-        <a href="#/settings" class="tab-item"><i class="icon ion-gear-b"></i></a>
-    </div>
- -->
-
-  </body>
+  </div>
+</body>
 </html>
 
 

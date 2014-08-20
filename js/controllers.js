@@ -150,6 +150,13 @@ angular.module('kindspring-app.controllers', [])
     }
   };
 
+})
+.controller('SideMenuCtrl', function($scope) {
+  $scope.showmenu=false;
+  $scope.toggleMenu = function(){
+    $scope.showmenu=($scope.showmenu) ? false : true;
+  };
+  $scope.hideMenu = function() {$scope.showmenu =false;};
 });
 
 
