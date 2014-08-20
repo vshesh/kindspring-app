@@ -32,17 +32,17 @@
 <body ng-app="kindspring-app" ng-controller="SideMenuCtrl">
   <!-- Sidemenu divs -->
   <div id="menuleft" ng-class="{hide:!showmenu,slide:showmenu}">
-      <h1>Demo</h1>
-      <ul>
-        <li><a ng-click="toggleMenu()">Link 1</a></li>
-        <li><a ng-click="toggleMenu()">Link 2</a></li>
-        <li><a ng-click="toggleMenu()">Link 3</a></li>
+      <ul class="list">
+        <li class="item item-divider">Menu</li>
+        <li class="item" ng-click="hideMenu()">Challenges</li>
+        <li class="item" ng-click="hideMenu()">Progress</li>
+        <li class="item" ng-click="hideMenu()">Log Out</li>
     </ul>
   </div>
 
   <!-- Main Content Div -->
   <div id="all">
-    <div class="overlay" ng-class="{show:showmenu}" ng-swipe-left="showmenu=false" ng-click="showmenu=false"></div>
+    <div class="overlay" ng-class="{show:showmenu}" ng-swipe-left="hideMenu()" ng-click="hideMenu()"></div>
     <div class="bar bar-header bar-balanced">
       <button class="button button-icon icon ion-navicon" ng-click="toggleMenu()"></button>
       <h1 class="title">KindSpring App</h1>
