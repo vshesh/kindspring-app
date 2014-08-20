@@ -7,7 +7,7 @@
       <input type="password" ng-model="pass" placeholder="Password">
     </label>
     <button class="button button-block button-positive" ng-click="login()">Log In</button>
-    <span>{{loginmessage}}</span>
+    <span>{{loginMessage}}</span>
   </div>  
   <div class="list card kind-story-card" ng-repeat="story in stories track by $index"
     ng-click="setExpanded($index)" ng-class="{'ks-story-expanded': $index == expandedIndex}">

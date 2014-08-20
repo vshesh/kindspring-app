@@ -98,19 +98,19 @@ angular.module('kindspring-app.controllers', [])
   };
 })
 .controller('MainCtrl',function($scope, $http, $location) {
-  $scope.stories = [];
   $scope.user = '';
   $scope.pass = '';
   $scope.loginMessage = '';
+  $scope.expandedIndex = -1;
+  $scope.stories = [];
 
   $scope.$on('$routeChangeSuccess', function() {
-    $http.get('http://www.kindspring.org/challenge/mobile/api.php?op=login&nick=&pass=')
+    $http.get('http://www.kindspring.org/challenge/mobile/api.php?op=login&user=&pass=')
       .success(function(data) {
-        if (data === '1') {
+        if (data.trim() == '1') {
           $location.url('/home');
         }
       });
-    console.log('routechangesuccess');
     $http({
       method: 'POST',
       url: 'api.php',
@@ -122,25 +122,26 @@ angular.module('kindspring-app.controllers', [])
   });
 
   $scope.login = function() {
-    if ($scope.user === '' || $scope.pass === '') return;
+    if ($scope.user === '' || $scope.pass === '') {
+      $scope.loginMessage="Please enter a username and password";
+      return;
+    }
     $http({
       method: 'POST',
       url: 'api.php',
       data: 'op=login&user='+$scope.user+'&pass=' + $scope.pass,
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function(data, status, headers, config) {
-      console.log(data);
-      if (data === 1 || data === '1') {
+      if (data == 1) {
+        console.log('success');
         $location.url('/home');
       } else {
         $scope.loginMessage = 'Invalid username or password';
       }
     });
-  }
+  };
   
   $scope.stripTags = stripTags;
-
-  $scope.expandedIndex = -1;
   $scope.setExpanded = function(index) {
     if (index == $scope.expandedIndex) {
       $scope.expandedIndex = -1;
