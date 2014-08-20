@@ -1,7 +1,18 @@
 /* Empty. Add your own CSS if you like */
-body {
+.snap-drawers {
+  background-color: rgba(0,0,0,0.8);
+  width: 50%;
+}
+
+div[snap-drawers] li.item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: ;
+}
+
+.snap-content {
   background-color: #f1f6d0;
 }
+
 
 h5 {
   font-weight: bold;
@@ -9,8 +20,7 @@ h5 {
 }
 
 .ks-container {
-  margin-top: 55px;
-  margin-bottom: 55px;
+  margin-top: 44px;
   background-color: inherit;
 }
 
@@ -38,54 +48,6 @@ h5 {
 #fixedtabs {
   position: fixed;
 }
-
-
-#menuleft {
-  left:-50%;
-  position:fixed;
-  top:50px;
-  width:50%;
-  height:100%;
-  z-index:1000;
-  display:block;
-  background-color: #69634B;
-}
-#menuleft.slide{
-  left:0;
-}
-
-#all{
-  display:block;
-  width:100%
-}
-#all.hide{
-  position:fixed;
-  left:50%;
-  top:0;
-  width:100%
-}
-#all.slide{
-  position:relative;
-}
-.slide,.hide{
-  transition: all 0.2s ease;
-}
-
-.overlay {
-  left:0;
-  top:50px;
-  transition: all 0.2s ease;
-}
-
-.overlay.show {
-  position:fixed;
-  left:50%;
-  right:0;
-  bottom:0;
-  background-color:rgba(0, 0, 0, 0.5);
-  z-index:9999;
-}
-
 
 
 

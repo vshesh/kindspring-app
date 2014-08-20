@@ -149,14 +149,28 @@ angular.module('kindspring-app.controllers', [])
       $scope.expandedIndex = index;
     }
   };
-
 })
-.controller('SideMenuCtrl', function($scope) {
-  $scope.showmenu=false;
-  $scope.toggleMenu = function(){
-    $scope.showmenu=($scope.showmenu) ? false : true;
+.controller('SideMenuCtrl', function($scope, $http, $location, $route, snapRemote) {
+  $scope.challenges = function() {
+    snapRemote.close();
+    $location.path('/home');
+    $route.reload();
   };
-  $scope.hideMenu = function() {$scope.showmenu =false;};
+  $scope.progress = function() {
+    
+  };
+  $scope.logout = function() {
+    $http({
+      method: 'POST',
+      url: 'api.php',
+      data: 'op=logout',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function() {
+      snapRemote.close();
+      $location.path('/');
+      $route.reload();  
+    });
+  };
 });
 
 

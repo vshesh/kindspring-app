@@ -1,52 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title></title>  
 
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+  <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="lib/angular-snap/angular-snap.min.css"></script>  
 
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
-    <link href="css/ionic.app.css" rel="stylesheet">
--->
+  <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+  <link href="css/ionic.app.css" rel="stylesheet"> -->  
 
-<!-- ionic/angularjs js -->
-<script src="lib/angular/angular.min.js"></script>
-<script src="lib/angular-route/angular-route.min.js"></script>
-<script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
-<script src="lib/angular-ui-utils/ui-utils.min.js"></script>
-<script src="lib/angular-touch/angular-touch.min.js"></script>
+  <!-- ionic/angularjs js -->
+  <script src="lib/angular/angular.min.js"></script>
+  <script src="lib/angular-route/angular-route.min.js"></script>
+  <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="lib/angular-ui-utils/ui-utils.min.js"></script>
+  <script src="lib/angular-touch/angular-touch.min.js"></script>
+  <script src="lib/snapjs/snap.min.js"></script>
+  <script src="lib/angular-snap/angular-snap.min.js"></script>  
 
-<!-- cordova script (this will be a 404 during development) -->
-<!-- for now, it's a webapp so no cordova -->
-<!-- <script src="cordova.js"></script> -->
+  <!-- cordova script (this will be a 404 during development) -->
+  <!-- for now, it's a webapp so no cordova -->
+  <!-- <script src="cordova.js"></script> -->  
 
-<!-- your app's js -->
-<script src="js/app.js"></script>
-<script src="js/controllers.js"></script>
+  <!-- your app's js -->
+  <script src="js/app.js"></script>
+  <script src="js/controllers.js"></script>
 </head>
 
 <body ng-app="kindspring-app" ng-controller="SideMenuCtrl">
-  <!-- Sidemenu divs -->
-  <div id="menuleft" ng-class="{hide:!showmenu,slide:showmenu}">
-      <ul class="list">
-        <li class="item item-divider">Menu</li>
-        <li class="item" ng-click="hideMenu()">Challenges</li>
-        <li class="item" ng-click="hideMenu()">Progress</li>
-        <li class="item" ng-click="hideMenu()">Log Out</li>
-    </ul>
+  <div class="bar bar-header bar-balanced">
+    <button class="button button-icon icon ion-navicon" snap-toggle="left"></button>
+    <h1 class="title">KindSpring App</h1>
   </div>
-
-  <!-- Main Content Div -->
-  <div id="all">
-    <div class="overlay" ng-class="{show:showmenu}" ng-swipe-left="hideMenu()" ng-click="hideMenu()"></div>
-    <div class="bar bar-header bar-balanced">
-      <button class="button button-icon icon ion-navicon" ng-click="toggleMenu()"></button>
-      <h1 class="title">KindSpring App</h1>
+  <div snap-drawers> 
+    <div class="ks-container">
+      <ul class="list">
+          <li class="item" ng-click="challenges()">Challenges</li>
+          <li class="item">Progress</li>
+          <li class="item" ng-click="logout()">Log Out</li>
+      </ul>
     </div>
+  </div>
+  <!-- Main Content Div -->
+  <div snap-content>
     <div ng-view></div>
   </div>
 </body>

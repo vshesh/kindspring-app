@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('kindspring-app', ['ngRoute', 'ngSanitize', 'ngTouch', 'ui.utils', 'kindspring-app.controllers'])
+angular.module('kindspring-app', ['ngRoute', 'ngSanitize', 'ngTouch', 'snap', 'ui.utils', 'kindspring-app.controllers'])
 
 .config(function($routeProvider) {
   $routeProvider
