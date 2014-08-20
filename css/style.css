@@ -15,6 +15,7 @@ h5 {
 }
 
 .kind-story-card {
+  word-wrap: normal;
 }
 .kind-story-card h5 {
   text-align: center;

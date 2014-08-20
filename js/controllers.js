@@ -34,6 +34,20 @@ angular.module('kindspring-app.controllers', [])
 .controller('PostCtrl', function($scope, $location) {
   
 })
+.controller('IdeaCtrl', function($scope, $location, $http, $routeParams) {
+  $scope.ideas = [];
+  $scope.$on('$routeChangeSuccess', function() {
+    $http({
+      method: 'POST',
+      url: 'api.php',
+      data: 'op=chall_ideas&cid=' + $routeParams.cid,
+      headers: {'Content-Type':'application/x-www-form-urlencoded'}
+    }).success(function(data) {
+      console.log(data);
+      $scope.ideas = data;
+    });
+  });  
+})
 .controller('MemberCtrl', function($scope, $location, $http, $routeParams) {
   $scope.members = [];
   $scope.$on('$routeChangeSuccess', function() {
@@ -43,7 +57,6 @@ angular.module('kindspring-app.controllers', [])
       data: 'op=chall_mem&cid=' + $routeParams.cid,
       headers: {'Content-Type':'application/x-www-form-urlencoded'}
     }).success(function(data) {
-      console.log(data);
       $scope.members = data;
     });
   });  
@@ -91,6 +104,12 @@ angular.module('kindspring-app.controllers', [])
   $scope.loginMessage = '';
 
   $scope.$on('$routeChangeSuccess', function() {
+    $http.get('http://www.kindspring.org/challenge/mobile/api.php?op=login&nick=&pass=')
+      .success(function(data) {
+        if (data === '1') {
+          $location.url('/home');
+        }
+      });
     console.log('routechangesuccess');
     $http({
       method: 'POST',

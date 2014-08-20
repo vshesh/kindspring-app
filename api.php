@@ -23,11 +23,26 @@ if ($op == "public_feed") {
 
 } elseif ($op == "chall_ideas") {
     $ideas = getChallengeIdeas($_REQUEST["cid"]);
-    debug_array($ideas);
+    echo json_encode($ideas);
  
 } elseif ($op == "menu") {
     if (!$user->isLoggedIn()) die("Login first.");
     t_show_rel("index.tpl");
+
+} elseif ($op == "list_stories") {
+    showStories($_REQUEST["cid"]);
+
+} elseif ($op == "add_story") {
+    showAddStoryForm($_REQUEST["cid"]);
+
+} elseif ($op == "edit_story") {
+    showEditStoryForm($_REQUEST["cid"], $_REQUEST["sid"]);
+
+} elseif ($op == "del_story") {
+    include_once(_SHARED_APIS_."ks/story.inc");
+    $st = new KSStory($_REQUEST["sid"]);
+    $st->deleteStory();
+    header("Location: "._SITE_URL_."challenge/mobile/api.php?op=list_stories&cid=$_REQUEST[cid]");
 
 } elseif ($op == "logout") {
     $user->logOut();
@@ -35,6 +50,7 @@ if ($op == "public_feed") {
 
 } elseif ($op == "login") {
     echo json_encode(processLogin($_REQUEST["user"], $_REQUEST["pass"]));
+
 } else {
     echo json_encode($op);
 }
@@ -154,4 +170,139 @@ function processLogin($nick, $pass) {
     }
 }
 
+function showStories($cid) {
+    $mem = $GLOBALS["GMEM"];
+    $type = "";
+
+    include_once(_SHARED_APIS_."ks/feed.inc");
+    $feed = new KSFeed($cid);
+    $st = $feed->getFeedStories(0,$type);
+    t_set(array("STORIES"   => $st["STORIES"],
+                "NEXTSTART" => 10,
+                "OVERQUOTA" => $feed->overAddQuota(),
+                "FEED_TITLE"=> $feed->getFeedName(),
+                "MY_THUMB"  => $mem->getThumb(),
+                "MY_MID"    => $mem->getMemId(),
+                "CID"       => $cid,
+               ));
+    unset($feed);
+    t_show_rel("stories.tpl");
+}
+
+function showAddStoryForm($cid) {
+
+    include_once(_SHARED_APIS_."/lib/zebraform/form.inc");
+    $form = new Zebra_Form('myform');
+    $form->assets_path("/home/kspring/public_html/inc/zebra/", "http://www.kindspring.org/inc/zebra/");
+
+    $form->add('label', 'label_title', 'title', 'Title:');
+    $obj = $form->add('text', 'title', $_REQUEST["title"], array("style"=>"width:350px"));
+    $obj->set_rule(array(
+        'required'  => array('error', 'Title is required!'),
+    ));
+
+    // get default description
+    if (strlen($_REQUEST["photo"])) {
+        $lg_photo = str_replace("_sm.jpg","_lg.jpg",$_REQUEST["photo"]);
+        $descr = "<img src='$lg_photo' style='max-width: 425px' $lattr ks_photo=1 style='border: 1px solid #ccc; margin: 5px 0 0 0px; padding: 2px;'><div class='clrflt'></div><BR>".$_REQUEST["descr"];
+    } else {
+        $descr = nl2br($_REQUEST["descr"]);
+    }
+
+    $form->add('label', 'label_descr', 'descr', 'Description:');
+    $obj = $form->add('textarea', 'descr', $descr, array("style" => "width: 350px; height: 100px"));
+    $obj->set_rule(array(
+        'required'  => array('error', 'Description is empty!'),
+    ));
+
+    $form->add('label', 'label_tags', 'tags', 'Tags:');
+    $obj = $form->add('text', 'tags', $_REQUEST["tags"], array("style"=>"width:350px"));
+    $form->add('note', 'note_tags', 'tags', "Comma separated list of keywords to help others find it more easily.");
+
+    $form->add('hidden', 'op', "add_story");
+    $form->add('submit', 'btnsubmit', 'Add Kindness Story');
+
+    if ($form->validate()) {
+        include_once(_SHARED_APIS_."ks/feed.inc");
+        $feed = new KSFeed($cid);
+        $status = $feed->addStory($_REQUEST);
+        if (!is_numeric($status)) {
+            $form->add_error('error',$status);
+            t_set(array("FORM" => $form->render('*horizontal',true),
+                        "OP"   => "showadd", ));
+        } else {
+            t_set(array("OP"    => "showthanks",));
+        }
+    } else {
+        t_set(array("FORM"  => $form->render('*horizontal',true),
+                    "OP"    => "showadd", ));
+    }
+
+    t_show_rel("add.tpl");
+}
+
+function showEditStoryForm($cid, $sid) {
+    if (!is_numeric($sid)) return;
+    $st = get_table_one_row("sg_story", "story_id='$sid'");
+    if (!$st) { header("Location: "._SITE_URL_."my/index.php"); exit; }
+    $st["story_title"] = htmlentities($st["story_title"]);
+
+    include_once(_SHARED_APIS_."ks/story.inc");
+    $myst = new KSStory($sid);
+
+    //$form = get_form($st["story_title"],$st["story_descr"],"edit");
+    include_once(_SHARED_APIS_."/lib/zebraform/form.inc");
+    $form = new Zebra_Form('myform');
+    $form->assets_path("/home/kspring/public_html/inc/zebra/", "http://www.kindspring.org/inc/zebra/");
+
+    $form->add('label', 'label_title', 'title', 'Title:');
+    $obj = $form->add('text', 'title', $st["story_title"], array("style"=>"width:350px"));
+    $obj->set_rule(array(
+        'required'  => array('error', 'Title is required!'),
+        //'length' => array(4,80,'error','Subject too long', true),
+    ));
+
+    $form->add('label', 'label_descr', 'descr', 'Description:');
+    $obj = $form->add('textarea', 'descr', $st["story_descr"], array("style" => "width: 350px; height: 50px"));
+    $obj->set_rule(array(
+        'required'  => array('error', 'Description is empty!'),
+    ));
+
+    $tags = $myst->getStoryTagList();
+
+    $form->add('label', 'label_tags', 'tags', 'Tags:');
+    $obj = $form->add('text', 'tags', $tags, array("style"=>"width:350px"));
+    $form->add('note', 'note_tags', 'tags', "Comma separated list of keywords to help others find this story more easily.");
+
+    $form->add('hidden', 'op', "edit_story");
+    $form->add('hidden', 'cid', "$cid");
+    $form->add('submit', 'btnsubmit', 'Submit Changes');
+
+    // validate the form
+    if ($form->validate()) {
+        $status = $myst->editStory($_REQUEST["title"],$_REQUEST["descr"]);
+        if (!is_numeric($status)) {
+            $form->add_error('error',$status);
+            t_set(array("FORM" => $form->render('*horizontal',true),
+                        "OP"   => "showform", ));
+        } else {
+            $myst->addMultipleTags($_REQUEST["tags"]);
+            t_set(array("OP" => "showthanks",));
+        }
+
+    } else {
+        // auto generate output, labels above form elements
+        t_set(array("FORM" => $form->render('*horizontal',true),
+                    "OP"   => "showform", ));
+    }
+    unset($myst);
+
+    t_set(array("STORY" => $st,
+                "TITLE" => "Edit Story",
+                "CID"   => $cid,
+                ));
+    t_show_rel("add.tpl");
+}
+
+?>
 

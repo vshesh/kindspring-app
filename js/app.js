@@ -43,13 +43,5 @@ angular.module('kindspring-app', ['ngRoute', 'ngSanitize', 'ui.utils', 'kindspri
     .otherwise({
       redirectTo: '/'
     });
-})
-
-.factory('challengeService', function() {
-  var challenges = [];
-  return {
-    getChallenges: function() { return challenges;},
-    getCid: function(index) { return challenges[0].cid},
-  }
 });
 
