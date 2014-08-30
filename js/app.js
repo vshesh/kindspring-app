@@ -47,8 +47,7 @@ angular.module('kindspring-app', ['ngRoute', 'ngSanitize', 'ngTouch', 'snap', 'u
 
 .run(function($rootScope, $location, $route) {
   $rootScope.$on('$routeChangeStart', function(event, next, current) {
-    if ($rootScope.loggedin == null || $rootScope.loggedin === false) {
-      console.log(next);
+    if (document.cookie.replace(/(?:(?:^|.*;\s*)ho_cookie31\s*\=\s*([^;]*).*$)|^.*$/, "$1") === "") {
       if (next.templateUrl != "templates/main.html")  {
         $location.url('/');
         $route.reload();

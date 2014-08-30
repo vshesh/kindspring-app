@@ -155,11 +155,11 @@ angular.module('kindspring-app.controllers', [])
     }).success(function(data, status, headers, config) {
       if (data == 1) {
         console.log('success');
+        $rootScope.loggedin = true;
         $location.url('/home');
       } else {
         $scope.loginMessage = 'Invalid username or password';
       }
-      $rootScope.loggedin = true;
     });
   };
   
