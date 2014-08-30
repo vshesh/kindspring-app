@@ -1,14 +1,16 @@
 <div class="ks-container list list-inset">
+  <span ng-show="showerror">{{errorMessage}}</span>
   <label class="item item-input item-stacked-label">
     <span class="input-label">Title</span>
-    <input type="text" ng-model="username" placeholder="eg: Awesome Experience">
+    <input type="text" ng-model="title" placeholder="eg: Awesome Experience">
   </label>
   <label class="item item-input item-stacked-label">
     <span class="input-label">Reflection</span>
-    <textarea rows="20" placeholder="Today I did this awesome random act of kindness..."></textarea>
+    <textarea rows="20" ng-model="reflection" placeholder="Today I did this awesome random act of kindness..."></textarea>
   </label>
   <div class="button-bar post-button-bar">
-    <a href="#" class="button button-balanced">Add Photo</a>
-    <a href="#" class="button button-positive" ng-click="login()">Submit</a>
+    <a href="#" class="button button-balanced" ng-click="getPhoto()">Add Photo</a>
+    <a href="#" class="button button-positive" ng-click="addStory()">Submit</a>
   </div>
 </div>
+  

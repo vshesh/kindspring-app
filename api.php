@@ -33,7 +33,7 @@ if ($op == "public_feed") {
     showStories($_REQUEST["cid"]);
 
 } elseif ($op == "add_story") {
-    showAddStoryForm($_REQUEST["cid"]);
+    echo json_encode(addStory($_REQUEST["cid"], $_REQUEST["title"], $_REQUEST["descr"]));
 
 } elseif ($op == "edit_story") {
     showEditStoryForm($_REQUEST["cid"], $_REQUEST["sid"]);
@@ -113,53 +113,6 @@ function getChallengeFeed($cid) {
     return $st["STORIES"];
 }
 
-// this shows the form and when submitted returns back to this function
-// it's doing fancy stuff for rendering, but you can ignore that
-// key part is what happens when "form->validate()" passes
-function showLoginForm() {
-    global $user;
-    include_once(_SHARED_APIS_."/lib/zebraform/form.inc");
-    $form = new Zebra_Form('form','POST','',array("style"=>'width:400px; background-color: #fff'));
-    $form->assets_path("/home/sspace/public_html/inc/zebra/", "http://www.servicespace.org/inc/zebra/");
-
-    $form->add('label', 'label_nickname', 'nickname', 'Nickname:');
-    $obj = $form->add('text', 'nickname', $nick);
-    $obj->set_rule(array(
-        'alphanumeric'  =>  array('_-.','error', 'Invalid characters in nickname.'),
-        'required'  =>  array('error', 'Nickname is required!'),
-        ));
-
-    $form->add('label', 'label_password', 'password', 'Password:');
-    //$obj = $form->add('password', 'password', $pwd);
-    $obj = $form->add('password', 'password');  
-    $obj->set_rule(array(
-        'required'  => array('error', 'Please enter password!'),
-    ));
-
-    $form->add('submit', 'btnsubmit', 'Login Into KindSpring');
-
-    // in case the error is coming from another login page
-    if ($err != "") $form->add_error('error', $err);
-
-    if ($form->validate()) {
-        // when the form is submitted, we enter this part
-        $err = processLogin($_REQUEST["nickname"],$_REQUEST["password"]);
-        if (!$err) {
-            $success = "http://kindspring.org/challenge/mobile/index.php?op=menu"; 
-            header("Location: $url"); 
-            exit;
-        } else {
-            $form->add_error('error', $err);
-            t_set(array("FORM" => $form->render('*horizontal',true)));
-        }
-
-    } else {
-        // auto generate output, labels above form elements
-        t_set(array("FORM" => $form->render('*horizontal',true)));
-    }
-    t_show_rel("form.tpl");
-}
-
 function processLogin($nick, $pass) {
     global $user;
     $err = $user->loginError($nick, $pass, 1);
@@ -189,56 +142,11 @@ function showStories($cid) {
     t_show_rel("stories.tpl");
 }
 
-function showAddStoryForm($cid) {
-
-    include_once(_SHARED_APIS_."/lib/zebraform/form.inc");
-    $form = new Zebra_Form('myform');
-    $form->assets_path("/home/kspring/public_html/inc/zebra/", "http://www.kindspring.org/inc/zebra/");
-
-    $form->add('label', 'label_title', 'title', 'Title:');
-    $obj = $form->add('text', 'title', $_REQUEST["title"], array("style"=>"width:350px"));
-    $obj->set_rule(array(
-        'required'  => array('error', 'Title is required!'),
-    ));
-
-    // get default description
-    if (strlen($_REQUEST["photo"])) {
-        $lg_photo = str_replace("_sm.jpg","_lg.jpg",$_REQUEST["photo"]);
-        $descr = "<img src='$lg_photo' style='max-width: 425px' $lattr ks_photo=1 style='border: 1px solid #ccc; margin: 5px 0 0 0px; padding: 2px;'><div class='clrflt'></div><BR>".$_REQUEST["descr"];
-    } else {
-        $descr = nl2br($_REQUEST["descr"]);
-    }
-
-    $form->add('label', 'label_descr', 'descr', 'Description:');
-    $obj = $form->add('textarea', 'descr', $descr, array("style" => "width: 350px; height: 100px"));
-    $obj->set_rule(array(
-        'required'  => array('error', 'Description is empty!'),
-    ));
-
-    $form->add('label', 'label_tags', 'tags', 'Tags:');
-    $obj = $form->add('text', 'tags', $_REQUEST["tags"], array("style"=>"width:350px"));
-    $form->add('note', 'note_tags', 'tags', "Comma separated list of keywords to help others find it more easily.");
-
-    $form->add('hidden', 'op', "add_story");
-    $form->add('submit', 'btnsubmit', 'Add Kindness Story');
-
-    if ($form->validate()) {
-        include_once(_SHARED_APIS_."ks/feed.inc");
-        $feed = new KSFeed($cid);
-        $status = $feed->addStory($_REQUEST);
-        if (!is_numeric($status)) {
-            $form->add_error('error',$status);
-            t_set(array("FORM" => $form->render('*horizontal',true),
-                        "OP"   => "showadd", ));
-        } else {
-            t_set(array("OP"    => "showthanks",));
-        }
-    } else {
-        t_set(array("FORM"  => $form->render('*horizontal',true),
-                    "OP"    => "showadd", ));
-    }
-
-    t_show_rel("add.tpl");
+function addStory($cid, $title, $descr) {
+    include_once(_SHARED_APIS_."ks/feed.inc");
+    $feed = new KSFeed($cid);
+    $status = $feed->addStory($_REQUEST);
+    return $status;
 }
 
 function showEditStoryForm($cid, $sid) {

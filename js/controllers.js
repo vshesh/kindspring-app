@@ -5,7 +5,7 @@ function ArrayDataSource(array) {
     get: function(index, count, success) {
         var start = Math.max(0, index);
         var end = Math.min(index+count, this.data.length);
-        success(this.data.slice(0, end));
+        success(this.data.slice(start, end));
     },
     data: array    
   };
@@ -31,8 +31,31 @@ angular.module('kindspring-app.controllers', [])
     {name: 'Flowers For My Neighbors'},
   ]);
 })
-.controller('PostCtrl', function($scope, $location) {
-  
+.controller('PostCtrl', function($scope, $http, $location, $routeParams) {
+  $scope.title = undefined;
+  $scope.reflection = undefined;
+  $scope.showerror = false;
+  $scope.errorMessage = '';
+
+  $scope.addStory = function() {
+    if ($scope.title != undefined && $scope.reflection != undefined) {
+      $http({
+        method: 'POST',
+        url: 'api.php',
+        data: 'op=add_story&title=' + $scope.title + '&descr=' + $scope.reflection
+            + '&cid=' + $routeParams.cid,
+        headers: {'Content-Type' : 'application/x-www-form-urlencoded'}
+      })
+      .success(function(data) {
+        if (isNaN(data)) {
+          $scope.errorMessage = data;
+          $scope.showerror = true;
+        } else {
+          $location.url('/challenge/'+$routeParams.cid);
+        }
+      });
+    }
+  };
 })
 .controller('IdeaCtrl', function($scope, $location, $http, $routeParams) {
   $scope.ideas = [];
@@ -49,7 +72,7 @@ angular.module('kindspring-app.controllers', [])
   });  
 })
 .controller('MemberCtrl', function($scope, $location, $http, $routeParams) {
-  $scope.members = [];
+  $scope.members = ArrayDataSource([]);
   $scope.$on('$routeChangeSuccess', function() {
     $http({
       method: 'POST',
@@ -57,7 +80,8 @@ angular.module('kindspring-app.controllers', [])
       data: 'op=chall_mem&cid=' + $routeParams.cid,
       headers: {'Content-Type':'application/x-www-form-urlencoded'}
     }).success(function(data) {
-      $scope.members = data;
+      console.log(ArrayDataSource(data));
+      $scope.members = ArrayDataSource(data);
     });
   });  
 })
@@ -73,6 +97,9 @@ angular.module('kindspring-app.controllers', [])
       $scope.feed = data;
     });
   });
+  $scope.routeToPost = function() {
+    $location.url('/post/' + $routeParams.cid);
+  };
 })
 .controller('HomepageCtrl', function($scope, $http, $location, $route) {
   $scope.challenges = [{story_title: "sample story", story_descr: "<br>"}];
@@ -97,7 +124,7 @@ angular.module('kindspring-app.controllers', [])
     $location.url('/challenge/'+cid);
   };
 })
-.controller('MainCtrl',function($scope, $http, $location) {
+.controller('MainCtrl',function($rootScope, $scope, $http, $location) {
   $scope.user = '';
   $scope.pass = '';
   $scope.loginMessage = '';
@@ -105,12 +132,6 @@ angular.module('kindspring-app.controllers', [])
   $scope.stories = [];
 
   $scope.$on('$routeChangeSuccess', function() {
-    $http.get('http://www.kindspring.org/challenge/mobile/api.php?op=login&user=&pass=')
-      .success(function(data) {
-        if (data.trim() == '1') {
-          $location.url('/home');
-        }
-      });
     $http({
       method: 'POST',
       url: 'api.php',
@@ -138,6 +159,7 @@ angular.module('kindspring-app.controllers', [])
       } else {
         $scope.loginMessage = 'Invalid username or password';
       }
+      $rootScope.loggedin = true;
     });
   };
   
@@ -150,14 +172,14 @@ angular.module('kindspring-app.controllers', [])
     }
   };
 })
-.controller('SideMenuCtrl', function($scope, $http, $location, $route, snapRemote) {
+.controller('SideMenuCtrl', function($rootScope, $scope, $http, $location, $route, snapRemote) {
   $scope.challenges = function() {
     snapRemote.close();
-    $location.path('/home');
+    $location.url('/home');
     $route.reload();
   };
   $scope.progress = function() {
-    
+
   };
   $scope.logout = function() {
     $http({
@@ -167,8 +189,9 @@ angular.module('kindspring-app.controllers', [])
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function() {
       snapRemote.close();
-      $location.path('/');
-      $route.reload();  
+      $rootScope.loggedin = null;
+      $location.url('/');
+      $route.reload();
     });
   };
 });

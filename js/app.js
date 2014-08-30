@@ -32,7 +32,7 @@ angular.module('kindspring-app', ['ngRoute', 'ngSanitize', 'ngTouch', 'snap', 'u
       templateUrl: 'templates/ideas.html',
       controller: 'IdeaCtrl'
     })
-    .when('/post', {
+    .when('/post/:cid', {
       templateUrl: 'templates/post.html',
       controller: 'PostCtrl'
     })
@@ -43,5 +43,28 @@ angular.module('kindspring-app', ['ngRoute', 'ngSanitize', 'ngTouch', 'snap', 'u
     .otherwise({
       redirectTo: '/'
     });
+})
+
+.run(function($rootScope, $location, $route) {
+  $rootScope.$on('$routeChangeStart', function(event, next, current) {
+    if ($rootScope.loggedin == null || $rootScope.loggedin === false) {
+      console.log(next);
+      if (next.templateUrl != "templates/main.html")  {
+        $location.url('/');
+        $route.reload();
+      }
+    }
+  });
 });
+
+
+
+
+
+
+
+
+
+
+
 
